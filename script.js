@@ -335,6 +335,10 @@ for (let i = 0; i < 4; i++) {
     distance.id = 'distance' + i;
     container.appendChild(distance);
 
+    let bearing = document.createElement('span');
+    bearing.id = 'bearing' + i;
+    container.appendChild(bearing);
+
     let thatBreak = document.createElement('br');
     container.appendChild(thatBreak);
 }
@@ -355,10 +359,31 @@ function doGuess() {
 
         let distance = calcCrow(currentCenter.substring(0,6), currentCenter.split(' ')[1].slice(0,-3), answerCenter.substring(0,6), answerCenter.split(' ')[1].slice(0,-3))
         console.log(distance);
-        document.getElementById('distance' + guessess).innerHTML = Math.round(distance);
+        document.getElementById('distance' + guessess).innerHTML = Math.round(distance) + ' miles';
 
         let curBearing = bearing(currentCenter.substring(0,6), currentCenter.split(' ')[1].slice(0,-3), answerCenter.substring(0,6), answerCenter.split(' ')[1].slice(0,-3))
+        let dir = 'N/A'
+        if (curBearing <= 45/2 || curBearing > (360-(45/2))) {
+            dir = 'N'
+        } else if (curBearing > (45/2) && curBearing <= (90-(45/2))) {
+            dir = 'NW'
+        } else if (curBearing > (90-(45/2)) && curBearing <= (90+(45/2))) {
+            dir = 'W'
+        } else if (curBearing > (90+(45/2)) && curBearing <= (90+45+(45/2))) {
+            dir = 'SW'
+        } else if (curBearing > (90+45+(45/2)) && curBearing <= (180+(45/2))) {
+            dir = 'S'
+        } else if (curBearing > (180+(45/2)) && curBearing <= (180+45 + (45/2))) {
+            dir = 'SE'
+        } else if (curBearing > (180+45 + (45/2)) && curBearing <= 270 + (45/2)) {
+            dir = 'E'
+        } else if (curBearing > (270 + (45/2)) && curBearing <= (270 + 45 + (45/2))) {
+            dir = 'NE'
+        }
+
         console.log(curBearing)
+
+        document.getElementById('bearing' + guessess).innerHTML = '   ' + dir;
     }
     guessess++;
 }
